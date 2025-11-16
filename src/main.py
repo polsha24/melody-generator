@@ -1,7 +1,7 @@
-from src.entities.note import Note
-from src.entities.scale import Scale
-from src.entities.melody import Melody
-from src.services.generator import MelodyGenerator
+from entities.note import Note
+from entities.scale import Scale
+from entities.melody import Melody
+from services.generator import MelodyGenerator
 
 
 def main():

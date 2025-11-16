@@ -1,5 +1,5 @@
-from src.entities.scale import Scale
-from src.entities.melody import Melody
+from entities.scale import Scale
+from entities.melody import Melody
 
 class MelodyGenerator:
     """
