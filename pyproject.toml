@@ -1,0 +1,5 @@
+[project]
+name = "melody-generator"
+version = "0.1.0"
+description = "A melody generation tool for a programming course project."
+requires-python = ">=3.9"
