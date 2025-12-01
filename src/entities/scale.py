@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 from typing import List
 
+
 @dataclass
 class Scale:
     """
     Музыкальная гамма, содержит доступные высоты нот.
 
-    name -- название гаммы, например "C major"
-    notes -- MIDI высоты доступных нот в этой гамме
+    root -- корневая нота гаммы как MIDI номер (например, 60 == C4)
+    intervals -- интервальная формула, например [0, 2, 4, 5, 7, 9, 11]
     """
-    name: str
-    notes: List[int]
+
+    root: int
+    intervals: List[int]

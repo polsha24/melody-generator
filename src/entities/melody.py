@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import List
+
 from .note import Note
+
 
 @dataclass
 class Melody:
@@ -8,9 +10,9 @@ class Melody:
     Сгенерированная мелодия.
 
     notes -- последовательность нот
-    tempo -- темп (ударов в минуту)
-    bars -- количество тактов
     """
+
     notes: List[Note]
-    tempo: int
-    bars: int
+
+    def total_duration(self) -> float:
+        return sum(n.duration for n in self.notes)

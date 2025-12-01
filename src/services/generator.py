@@ -1,17 +1,32 @@
-from entities.scale import Scale
-from entities.melody import Melody
+import random
+
+from ..entities.melody import Melody
+from ..entities.note import Note
+from ..entities.scale import Scale
+from ..entities.settings import GeneratorSettings
+
 
 class MelodyGenerator:
-    """
-    Генерирует мелодию на основе гаммы и параметров
-    """
-    def __init__(self, scale: Scale, bars: int, tempo: int):
+    """Данный класс отвечает за генерацию мелодий"""
+
+    def __init__(self, scale: Scale, settings: GeneratorSettings):
         self.scale = scale
-        self.bars = bars
-        self.tempo = tempo
+        self.settings = settings
 
     def generate(self) -> Melody:
-        """
-        Возвращает экземпляр Melody
-        """
-        pass
+        notes = []
+
+        for _ in range(self.settings.length):
+            pitch = self._random_pitch()
+            duration = random.choice(self.settings.allowed_durations)
+            notes.append(Note(pitch=pitch, duration=duration))
+
+        return Melody(notes)
+
+    def _random_pitch(self) -> int:
+        """Возвращает случайную ноту в рамках гаммы"""
+        interval = random.choice(self.scale.intervals)
+        octave_shift = random.randint(
+            -self.settings.octave_range, self.settings.octave_range
+        )
+        return self.scale.root + interval + 12 * octave_shift
