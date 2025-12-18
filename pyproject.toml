@@ -14,7 +14,7 @@ target-version = ['py39']
 
 [tool.ruff]
 line-length = 88
-select = ["E", "F", "W", "C", "N", "I", "BLE", "SIM"]
+lint.select = ["E", "F", "W", "C", "N", "I", "BLE", "SIM"]
 
 [tool.isort]
 profile = "black"

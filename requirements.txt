@@ -1,2 +1,5 @@
 mido
 matplotlib
+fastapi
+uvicorn[standard]
+pygame
