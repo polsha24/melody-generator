@@ -1,6 +1,11 @@
 # macOS
 .DS_Store
 
+# Generated files
+*.mid
+*.png
+output.*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
