@@ -1,3 +1,7 @@
+"""
+Воспроизведение MIDI файлов через pygame.
+"""
+
 import time
 from pathlib import Path
 from typing import Union
@@ -7,7 +11,7 @@ import pygame.midi
 
 
 def init_player():
-    """Initialize pygame mixer for MIDI playback."""
+    """Инициализация pygame mixer для воспроизведения MIDI."""
     pygame.mixer.init()
 
 
@@ -16,31 +20,31 @@ def play_midi(
     wait: bool = True,
 ) -> None:
     """
-    Play a MIDI file.
+    Воспроизводит MIDI файл.
 
     Args:
-        midi_path: Path to the MIDI file
-        wait: If True, block until playback finishes
+        midi_path: Путь к MIDI файлу
+        wait: Если True, блокирует выполнение до окончания воспроизведения
     """
     midi_path = Path(midi_path)
     if not midi_path.exists():
-        raise FileNotFoundError(f"MIDI file not found: {midi_path}")
+        raise FileNotFoundError(f"MIDI файл не найден: {midi_path}")
 
-    # Initialize if not already
+    # Инициализация, если ещё не выполнена
     if not pygame.mixer.get_init():
         init_player()
 
-    # Load and play
+    # Загрузка и воспроизведение
     pygame.mixer.music.load(str(midi_path))
     pygame.mixer.music.play()
 
     if wait:
-        # Wait for playback to finish
+        # Ожидание окончания воспроизведения
         while pygame.mixer.music.get_busy():
             time.sleep(0.1)
 
 
 def stop_playback():
-    """Stop any currently playing music."""
+    """Останавливает текущее воспроизведение."""
     if pygame.mixer.get_init():
         pygame.mixer.music.stop()

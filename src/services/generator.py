@@ -1,3 +1,7 @@
+"""
+Генератор случайных мелодий.
+"""
+
 import random
 
 from ..entities.melody import Melody
@@ -7,13 +11,26 @@ from ..entities.settings import GeneratorSettings
 
 
 class MelodyGenerator:
-    """Данный класс отвечает за генерацию мелодий"""
+    """Класс для генерации мелодий на основе гаммы и настроек."""
 
     def __init__(self, scale: Scale, settings: GeneratorSettings):
+        """
+        Инициализация генератора.
+
+        Args:
+            scale: Музыкальная гамма
+            settings: Настройки генерации
+        """
         self.scale = scale
         self.settings = settings
 
     def generate(self) -> Melody:
+        """
+        Генерирует новую мелодию.
+
+        Returns:
+            Сгенерированная мелодия
+        """
         notes = []
 
         for _ in range(self.settings.length):
@@ -24,7 +41,12 @@ class MelodyGenerator:
         return Melody(notes)
 
     def _random_pitch(self) -> int:
-        """Возвращает случайную ноту в рамках гаммы"""
+        """
+        Возвращает случайную ноту в рамках гаммы.
+
+        Returns:
+            MIDI номер ноты
+        """
         interval = random.choice(self.scale.intervals)
         octave_shift = random.randint(
             -self.settings.octave_range, self.settings.octave_range

@@ -1,3 +1,7 @@
+"""
+Экспорт мелодий в формат MIDI.
+"""
+
 from pathlib import Path
 from typing import Union
 
@@ -45,9 +49,9 @@ def export_to_midi(
         # Длительность в тиках
         duration_ticks = int(note.duration * ticks_per_beat)
 
-        # Note on
+        # Начало ноты
         track.append(Message("note_on", note=note.pitch, velocity=velocity, time=0))
-        # Note off
+        # Конец ноты
         track.append(
             Message("note_off", note=note.pitch, velocity=0, time=duration_ticks)
         )

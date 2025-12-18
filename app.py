@@ -1,5 +1,5 @@
 """
-Desktop GUI for Melody Generator using Tkinter.
+Графический интерфейс генератора мелодий на Tkinter.
 """
 
 import shutil
@@ -35,19 +35,22 @@ from src.services.visualizer import plot_piano_roll, pretty_print_melody
 
 
 class MelodyGeneratorApp:
+    """Главный класс приложения генератора мелодий."""
+
     def __init__(self):
+        """Инициализация приложения."""
         self.root = Tk()
-        self.root.title("Melody Generator")
+        self.root.title("Генератор мелодий")
         self.root.geometry("950x700")
         self.root.configure(bg="#1a1a2e")
 
-        # Data
+        # Данные
         self.keys = sorted(set(NOTE_TO_MIDI.keys()))
         self.scales = [s.value for s in ScaleType]
         self.current_midi_path = None
         self.photo_image = None
 
-        # Variables
+        # Переменные
         self.key_var = StringVar(value="C")
         self.scale_var = StringVar(value="major")
         self.length_var = IntVar(value=8)
@@ -57,57 +60,57 @@ class MelodyGeneratorApp:
         self._create_ui()
 
     def _create_ui(self):
-        """Create the user interface."""
+        """Создание пользовательского интерфейса."""
         main_frame = Frame(self.root, bg="#1a1a2e")
         main_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-        # Title
+        # Заголовок
         title = Label(
             main_frame,
-            text="Melody Generator",
+            text="Генератор мелодий",
             font=("Helvetica", 28, "bold"),
             fg="#a78bfa",
             bg="#1a1a2e",
         )
         title.pack(pady=(0, 20))
 
-        # Content
+        # Контент
         content = Frame(main_frame, bg="#1a1a2e")
         content.pack(fill="both", expand=True)
 
-        # Sidebar
+        # Боковая панель
         sidebar = Frame(content, bg="#252538", width=280)
         sidebar.pack(side="left", fill="y", padx=(0, 15))
         sidebar.pack_propagate(False)
         self._create_sidebar(sidebar)
 
-        # Main area
+        # Основная область
         main_area = Frame(content, bg="#1a1a2e")
         main_area.pack(side="left", fill="both", expand=True)
         self._create_main_area(main_area)
 
     def _create_sidebar(self, parent):
-        """Create settings sidebar."""
+        """Создание боковой панели настроек."""
         Label(
             parent,
-            text="Settings",
+            text="Настройки",
             font=("Helvetica", 16, "bold"),
             fg="#e4e4e7",
             bg="#252538",
         ).pack(pady=(20, 15))
 
-        self._create_dropdown(parent, "Key (Root Note)", self.key_var, self.keys)
-        self._create_dropdown(parent, "Scale Type", self.scale_var, self.scales)
-        self._create_slider(parent, "Number of Notes", self.length_var, 4, 32)
-        self._create_slider(parent, "Tempo (BPM)", self.tempo_var, 60, 200)
-        self._create_slider(parent, "Octave Range", self.octave_var, 0, 2)
+        self._create_dropdown(parent, "Тональность", self.key_var, self.keys)
+        self._create_dropdown(parent, "Тип гаммы", self.scale_var, self.scales)
+        self._create_slider(parent, "Количество нот", self.length_var, 4, 32)
+        self._create_slider(parent, "Темп (BPM)", self.tempo_var, 60, 200)
+        self._create_slider(parent, "Диапазон октав", self.octave_var, 0, 2)
 
         btn_frame = Frame(parent, bg="#252538")
         btn_frame.pack(fill="x", padx=20, pady=(30, 10))
 
         self.generate_btn = Button(
             btn_frame,
-            text="Generate",
+            text="Сгенерировать",
             font=("Helvetica", 14, "bold"),
             bg="#7c3aed",
             fg="#a78bfa",
@@ -121,7 +124,7 @@ class MelodyGeneratorApp:
 
         self.play_btn = Button(
             btn_frame,
-            text="Play",
+            text="Воспроизвести",
             font=("Helvetica", 12),
             bg="#374151",
             fg="#a78bfa",
@@ -136,7 +139,7 @@ class MelodyGeneratorApp:
 
         self.save_btn = Button(
             btn_frame,
-            text="Save MIDI",
+            text="Сохранить MIDI",
             font=("Helvetica", 12),
             bg="#374151",
             fg="#a78bfa",
@@ -150,7 +153,7 @@ class MelodyGeneratorApp:
         self.save_btn.pack(fill="x", pady=5, ipady=5)
 
     def _create_dropdown(self, parent, label_text, variable, options):
-        """Create a labeled dropdown."""
+        """Создание выпадающего списка с подписью."""
         frame = Frame(parent, bg="#252538")
         frame.pack(fill="x", padx=20, pady=(10, 0))
 
@@ -181,7 +184,7 @@ class MelodyGeneratorApp:
         menu.pack(fill="x", pady=(5, 0))
 
     def _create_slider(self, parent, label_text, variable, from_, to):
-        """Create a labeled slider."""
+        """Создание слайдера с подписью."""
         frame = Frame(parent, bg="#252538")
         frame.pack(fill="x", padx=20, pady=(15, 0))
 
@@ -222,10 +225,10 @@ class MelodyGeneratorApp:
         slider.pack(fill="x", pady=(5, 0))
 
     def _create_main_area(self, parent):
-        """Create main content area."""
+        """Создание основной области контента."""
         self.info_label = Label(
             parent,
-            text="Generate a melody to see the visualization",
+            text="Сгенерируйте мелодию для визуализации",
             font=("Helvetica", 12),
             fg="#a1a1aa",
             bg="#252538",
@@ -239,7 +242,7 @@ class MelodyGeneratorApp:
 
         self.image_label = Label(
             self.image_frame,
-            text="Piano Roll",
+            text="Пиано-ролл",
             font=("Helvetica", 14),
             fg="#71717a",
             bg="#252538",
@@ -261,11 +264,11 @@ class MelodyGeneratorApp:
             pady=10,
         )
         self.melody_text.pack(fill="x", padx=10, pady=10)
-        self.melody_text.insert("1.0", "Notes will appear here after generation...")
+        self.melody_text.insert("1.0", "Ноты появятся здесь после генерации...")
         self.melody_text.config(state=DISABLED)
 
     def _generate_melody(self):
-        """Generate a new melody."""
+        """Генерация новой мелодии."""
         key = self.key_var.get()
         scale_type = ScaleType(self.scale_var.get())
         length = self.length_var.get()
@@ -283,7 +286,7 @@ class MelodyGeneratorApp:
         melody = generator.generate()
 
         dur = melody.total_duration()
-        info_text = f"{key} {self.scale_var.get()} | {tempo}bpm | {dur:.1f}beats"
+        info_text = f"{key} {self.scale_var.get()} | {tempo}bpm | {dur:.1f} долей"
         self.info_label.config(text=info_text, fg="#e4e4e7")
 
         text_output = pretty_print_melody(melody, key=key)
@@ -321,33 +324,34 @@ class MelodyGeneratorApp:
         self.save_btn.config(state=NORMAL)
 
     def _play_melody(self):
-        """Play the generated melody."""
+        """Воспроизведение сгенерированной мелодии."""
         if self.current_midi_path:
-            self.play_btn.config(text="Playing...")
+            self.play_btn.config(text="Играет...")
             self.root.update()
             try:
                 play_midi(self.current_midi_path, wait=True)
             finally:
-                self.play_btn.config(text="Play")
+                self.play_btn.config(text="Воспроизвести")
 
     def _save_midi(self):
-        """Save the MIDI file."""
+        """Сохранение MIDI файла."""
         if self.current_midi_path:
             filename = filedialog.asksaveasfilename(
                 defaultextension=".mid",
-                filetypes=[("MIDI files", "*.mid"), ("All files", "*.*")],
-                initialfile=f"melody_{self.key_var.get()}_{self.scale_var.get()}.mid",
+                filetypes=[("MIDI файлы", "*.mid"), ("Все файлы", "*.*")],
+                initialfile=f"мелодия_{self.key_var.get()}_{self.scale_var.get()}.mid",
             )
             if filename:
                 shutil.copy(self.current_midi_path, filename)
-                self.info_label.config(text=f"Saved to {Path(filename).name}")
+                self.info_label.config(text=f"Сохранено: {Path(filename).name}")
 
     def run(self):
-        """Start the application."""
+        """Запуск приложения."""
         self.root.mainloop()
 
 
 def main():
+    """Точка входа в приложение."""
     app = MelodyGeneratorApp()
     app.run()
 

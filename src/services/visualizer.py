@@ -1,3 +1,7 @@
+"""
+Визуализация мелодий: текстовый вывод и пиано-ролл.
+"""
+
 from pathlib import Path
 from typing import Optional, Union
 
@@ -6,11 +10,12 @@ import matplotlib.pyplot as plt
 
 from ..entities.melody import Melody
 
+# Названия нот с диезами и бемолями
 NOTE_NAMES_SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 NOTE_NAMES_FLAT = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
 
-# Keys that traditionally use flats
-FLAT_KEYS = {"F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb", "D", "G", "A", "E", "B"}
+# Тональности, использующие бемоли
+FLAT_KEYS = {"F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb"}
 
 
 def midi_to_name(
@@ -18,14 +23,14 @@ def midi_to_name(
     use_flats: bool = False,
 ) -> str:
     """
-    Convert MIDI pitch to note name.
+    Преобразует MIDI номер ноты в название.
 
     Args:
-        pitch: MIDI note number (0-127)
-        use_flats: If True, use flats (Bb), otherwise sharps (A#)
+        pitch: MIDI номер ноты (0-127)
+        use_flats: Если True, использовать бемоли (Bb), иначе диезы (A#)
 
     Returns:
-        Note name like "C4", "F#5", or "Bb3"
+        Название ноты, например "C4", "F#5" или "Bb3"
     """
     octave = (pitch // 12) - 1
     note_names = NOTE_NAMES_FLAT if use_flats else NOTE_NAMES_SHARP
@@ -35,44 +40,51 @@ def midi_to_name(
 
 def should_use_flats(key: str) -> bool:
     """
-    Determine if a key should use flat notation.
+    Определяет, нужно ли использовать бемоли для данной тональности.
 
-    Keys with flats in their signature: F, Bb, Eb, Ab, Db, Gb
-    Keys with sharps in their signature: G, D, A, E, B, F#, C#
+    Тональности с бемолями: F, Bb, Eb, Ab, Db, Gb
+    Тональности с диезами: G, D, A, E, B, F#, C#
+
+    Args:
+        key: Название тональности
+
+    Returns:
+        True если нужны бемоли, False если диезы
     """
-    flat_keys = {"F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb"}
-    return key in flat_keys
+    return key in FLAT_KEYS
 
 
 def pretty_print_melody(melody: Melody, key: str = "C") -> str:
     """
-    Красивый вывод мелодии в стиле секвенсора.
-    Округляет длительности и гарантирует хотя бы один блок.
+    Красивый текстовый вывод мелодии в стиле секвенсора.
 
     Args:
-        melody: Melody object
-        key: Key name to determine sharp/flat notation
+        melody: Объект мелодии
+        key: Тональность для определения диезов/бемолей
+
+    Returns:
+        Форматированная строка с мелодией
     """
     use_flats = should_use_flats(key)
 
     output = []
-    output.append("Generated Melody")
+    output.append("Сгенерированная мелодия")
     output.append("")
 
     for note in melody.notes:
         name = midi_to_name(note.pitch, use_flats=use_flats)
 
-        # округление
+        # Округление длительности
         dur = round(note.duration, 2)
 
-        # длина блока — 1 beat = 4 квадратика
+        # Длина блока — 1 доля = 4 квадратика
         blocks = max(1, int(note.duration * 4))
 
-        line = f"{name}: " + "█" * blocks + f"  ({dur} beats)"
+        line = f"{name}: " + "█" * blocks + f"  ({dur} долей)"
         output.append(line)
 
     output.append("")
-    output.append(f"Total duration: {round(melody.total_duration(), 2)} beats")
+    output.append(f"Общая длительность: {round(melody.total_duration(), 2)} долей")
 
     return "\n".join(output)
 
@@ -85,21 +97,21 @@ def plot_piano_roll(
     show: bool = True,
 ) -> Optional[Path]:
     """
-    Create a piano roll visualization of the melody.
+    Создаёт визуализацию мелодии в виде пиано-ролла.
 
     Args:
-        melody: Melody object to visualize
-        key: Key name for note labeling
-        scale_name: Scale name for the title
-        output_path: If provided, save the plot to this file
-        show: If True, display the plot
+        melody: Объект мелодии для визуализации
+        key: Тональность для подписей нот
+        scale_name: Название гаммы для заголовка
+        output_path: Если указан, сохраняет график в файл
+        show: Если True, отображает график
 
     Returns:
-        Path to saved file if output_path provided, else None
+        Путь к сохранённому файлу, если указан output_path, иначе None
     """
     use_flats = should_use_flats(key)
 
-    # Prepare data
+    # Подготовка данных
     times = []
     pitches = []
     durations = []
@@ -111,17 +123,17 @@ def plot_piano_roll(
         durations.append(note.duration)
         current_time += note.duration
 
-    # Get pitch range for Y axis
+    # Диапазон высот для оси Y
     min_pitch = min(pitches) - 1
     max_pitch = max(pitches) + 1
 
-    # Create figure
+    # Создание фигуры
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    # Color gradient based on pitch (normalize to 0-1 range)
+    # Градиент цвета по высоте (нормализация к диапазону 0-1)
     pitch_range = max_pitch - min_pitch if max_pitch != min_pitch else 1
 
-    # Draw notes as rectangles
+    # Рисуем ноты как прямоугольники
     for i, (time, pitch, duration) in enumerate(zip(times, pitches, durations)):
         color = plt.cm.viridis((pitch - min_pitch) / pitch_range)
         rect = mpatches.FancyBboxPatch(
@@ -135,26 +147,26 @@ def plot_piano_roll(
         )
         ax.add_patch(rect)
 
-    # Configure axes
+    # Настройка осей
     ax.set_xlim(-0.1, current_time + 0.1)
     ax.set_ylim(min_pitch - 0.5, max_pitch + 0.5)
 
-    # Y-axis: show note names
+    # Ось Y: названия нот
     unique_pitches = sorted(set(pitches))
     ax.set_yticks(unique_pitches)
     ax.set_yticklabels([midi_to_name(p, use_flats) for p in unique_pitches])
 
-    # Grid
+    # Сетка
     ax.set_axisbelow(True)
     ax.grid(True, axis="x", alpha=0.3, linestyle="--")
     ax.grid(True, axis="y", alpha=0.2, linestyle="-")
 
-    # Labels
-    ax.set_xlabel("Time (beats)", fontsize=12)
-    ax.set_ylabel("Pitch", fontsize=12)
-    ax.set_title(f"Piano Roll: {key} {scale_name}", fontsize=14, fontweight="bold")
+    # Подписи
+    ax.set_xlabel("Время (доли)", fontsize=12)
+    ax.set_ylabel("Высота", fontsize=12)
+    ax.set_title(f"Пиано-ролл: {key} {scale_name}", fontsize=14, fontweight="bold")
 
-    # Style
+    # Стиль
     ax.set_facecolor("#1a1a2e")
     fig.patch.set_facecolor("#16213e")
     ax.tick_params(colors="white")
@@ -166,14 +178,14 @@ def plot_piano_roll(
 
     plt.tight_layout()
 
-    # Save if path provided
+    # Сохранение, если указан путь
     result = None
     if output_path:
         output_path = Path(output_path)
         plt.savefig(output_path, dpi=150, facecolor=fig.get_facecolor())
         result = output_path
 
-    # Show plot
+    # Показать график
     if show:
         plt.show()
     else:

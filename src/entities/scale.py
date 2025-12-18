@@ -1,18 +1,22 @@
+"""
+Сущности для работы с музыкальными гаммами.
+"""
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List
 
 
 class ScaleType(Enum):
-    """Типы музыкальных гамм"""
+    """Типы музыкальных гамм."""
 
-    MAJOR = "major"
-    MINOR = "minor"
-    PENTATONIC_MAJOR = "pentatonic_major"
-    PENTATONIC_MINOR = "pentatonic_minor"
-    BLUES = "blues"
-    DORIAN = "dorian"
-    MIXOLYDIAN = "mixolydian"
+    MAJOR = "major"  # Мажор
+    MINOR = "minor"  # Минор
+    PENTATONIC_MAJOR = "pentatonic_major"  # Мажорная пентатоника
+    PENTATONIC_MINOR = "pentatonic_minor"  # Минорная пентатоника
+    BLUES = "blues"  # Блюзовая гамма
+    DORIAN = "dorian"  # Дорийский лад
+    MIXOLYDIAN = "mixolydian"  # Миксолидийский лад
 
 
 # Интервальные формулы для каждого типа гаммы
@@ -26,7 +30,7 @@ SCALE_INTERVALS: Dict[ScaleType, List[int]] = {
     ScaleType.MIXOLYDIAN: [0, 2, 4, 5, 7, 9, 10],
 }
 
-# Названия нот -> MIDI номер (октава 4)
+# Соответствие названий нот и MIDI номеров (октава 4)
 NOTE_TO_MIDI: Dict[str, int] = {
     "C": 60,
     "C#": 61,
@@ -51,10 +55,11 @@ NOTE_TO_MIDI: Dict[str, int] = {
 @dataclass
 class Scale:
     """
-    Музыкальная гамма, содержит доступные высоты нот.
+    Музыкальная гамма.
 
-    root -- корневая нота гаммы как MIDI номер (например, 60 == C4)
-    intervals -- интервальная формула, например [0, 2, 4, 5, 7, 9, 11]
+    Attributes:
+        root: Корневая нота гаммы как MIDI номер (например, 60 = C4)
+        intervals: Интервальная формула гаммы
     """
 
     root: int
@@ -63,19 +68,22 @@ class Scale:
     @classmethod
     def from_key(cls, key: str, scale_type: ScaleType = ScaleType.MAJOR) -> "Scale":
         """
-        Создаёт гамму из названия ноты и типа гаммы.
+        Создаёт гамму из названия тональности и типа гаммы.
 
         Args:
             key: Название ноты (например, "C", "F#", "Bb")
             scale_type: Тип гаммы
 
         Returns:
-            Scale объект
+            Объект Scale
+
+        Raises:
+            ValueError: Если указана неизвестная тональность
         """
         key_upper = key.capitalize()
         if key_upper not in NOTE_TO_MIDI:
             available = ", ".join(sorted(set(NOTE_TO_MIDI.keys())))
-            raise ValueError(f"Unknown key: {key}. Available: {available}")
+            raise ValueError(f"Неизвестная тональность: {key}. Доступные: {available}")
 
         root = NOTE_TO_MIDI[key_upper]
         intervals = SCALE_INTERVALS[scale_type]

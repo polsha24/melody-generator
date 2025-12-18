@@ -1,3 +1,7 @@
+"""
+Сущность мелодии — последовательность нот.
+"""
+
 from dataclasses import dataclass
 from typing import List
 
@@ -9,10 +13,17 @@ class Melody:
     """
     Сгенерированная мелодия.
 
-    notes -- последовательность нот
+    Attributes:
+        notes: Последовательность нот
     """
 
     notes: List[Note]
 
     def total_duration(self) -> float:
+        """
+        Вычисляет общую длительность мелодии.
+
+        Returns:
+            Сумма длительностей всех нот в долях
+        """
         return sum(n.duration for n in self.notes)
