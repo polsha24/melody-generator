@@ -51,26 +51,31 @@ melody-generator/
 
 ## Установка и запуск
 
-### 1. Клонирование и настройка окружения
+### 1. Клонирование и установка зависимостей
 
 ```bash
 git clone <repository-url>
 cd melody-generator
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+poetry install
 ```
 
 ### 2. Запуск GUI приложения
 
 ```bash
-python app.py
+poetry run python app.py
 ```
 
 ### 3. Запуск консольного интерфейса
 
 ```bash
-python main.py
+poetry run python main.py
+```
+
+### Альтернативная установка (pip)
+
+```bash
+pip install -r requirements.txt
+python app.py
 ```
 
 ## Пример работы
@@ -138,16 +143,16 @@ MIDI файл сохранён: output.mid
 ### Установка инструментов разработки
 
 ```bash
-pip install -r requirements-dev.txt
-pre-commit install
+poetry install --with dev
+poetry run pre-commit install
 ```
 
 ### Полезные команды
 
 ```bash
-make format   # Форматирование кода (isort + black)
-make lint     # Проверка линтером (ruff)
-make run      # Запуск main.py
+poetry run black .        # Форматирование кода
+poetry run ruff check .   # Проверка линтером
+poetry run isort .        # Сортировка импортов
 ```
 
 ## Технологии
