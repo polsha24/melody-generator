@@ -26,9 +26,6 @@ def midi_to_name(
     Args:
         pitch: MIDI номер ноты (0-127)
         use_flats: Если True, использовать бемоли (Bb), иначе диезы (A#)
-
-    Returns:
-        Название ноты, например "C4", "F#5" или "Bb3"
     """
     octave = (pitch // 12) - 1
     note_names = NOTE_NAMES_FLAT if use_flats else NOTE_NAMES_SHARP
@@ -59,9 +56,6 @@ def pretty_print_melody(melody: Melody, key: str = "C") -> str:
     Args:
         melody: Объект мелодии
         key: Тональность для определения диезов/бемолей
-
-    Returns:
-        Форматированная строка с мелодией
     """
     use_flats = should_use_flats(key)
 

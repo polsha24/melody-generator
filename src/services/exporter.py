@@ -29,7 +29,7 @@ def export_to_midi(
         ticks_per_beat: Разрешение MIDI файла
 
     Returns:
-        Path к созданному файлу
+        Путь к созданному файлу
     """
     output_path = Path(output_path)
 

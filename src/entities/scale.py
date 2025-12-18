@@ -18,6 +18,7 @@ class ScaleType(Enum):
     DORIAN = "dorian"
     MIXOLYDIAN = "mixolydian"
 
+
 SCALE_INTERVALS: Dict[ScaleType, List[int]] = {
     ScaleType.MAJOR: [0, 2, 4, 5, 7, 9, 11],
     ScaleType.MINOR: [0, 2, 3, 5, 7, 8, 10],
@@ -52,11 +53,8 @@ NOTE_TO_MIDI: Dict[str, int] = {
 @dataclass
 class Scale:
     """
-    Музыкальная гамма.
-
-    Attributes:
-        root: Корневая нота гаммы как MIDI номер (например, 60 = C4)
-        intervals: Интервальная формула гаммы
+    root: Корневая нота гаммы как MIDI номер (например, 60 = C4)
+    intervals: Интервальная формула гаммы
     """
 
     root: int
@@ -67,14 +65,14 @@ class Scale:
         """
         Создаёт гамму из названия тональности и типа гаммы.
 
-        Args:
+        args:
             key: Название ноты (например, "C", "F#", "Bb")
             scale_type: Тип гаммы
 
-        Returns:
+        returns:
             Объект Scale
 
-        Raises:
+        raises:
             ValueError: Если указана неизвестная тональность
         """
         key_upper = key.capitalize()

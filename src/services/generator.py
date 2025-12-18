@@ -27,9 +27,6 @@ class MelodyGenerator:
     def generate(self) -> Melody:
         """
         Генерирует новую мелодию.
-
-        Returns:
-            Сгенерированная мелодия
         """
         notes = []
 
@@ -42,10 +39,7 @@ class MelodyGenerator:
 
     def _random_pitch(self) -> int:
         """
-        Возвращает случайную ноту в рамках гаммы.
-
-        Returns:
-            MIDI номер ноты
+        Возвращает MIDI номер случайной ноты в рамках гаммы.
         """
         interval = random.choice(self.scale.intervals)
         octave_shift = random.randint(

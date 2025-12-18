@@ -21,9 +21,6 @@ class Melody:
 
     def total_duration(self) -> float:
         """
-        Вычисляет общую длительность мелодии.
-
-        Returns:
-            Сумма длительностей всех нот в долях
+        Вычисляет сумму длительностей всех нот в долях.
         """
         return sum(n.duration for n in self.notes)
