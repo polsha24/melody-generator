@@ -44,13 +44,11 @@ class MelodyGeneratorApp:
         self.root.geometry("950x700")
         self.root.configure(bg="#1a1a2e")
 
-        # Данные
         self.keys = sorted(set(NOTE_TO_MIDI.keys()))
         self.scales = [s.value for s in ScaleType]
         self.current_midi_path = None
         self.photo_image = None
 
-        # Переменные
         self.key_var = StringVar(value="C")
         self.scale_var = StringVar(value="major")
         self.length_var = IntVar(value=8)
@@ -64,7 +62,6 @@ class MelodyGeneratorApp:
         main_frame = Frame(self.root, bg="#1a1a2e")
         main_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-        # Заголовок
         title = Label(
             main_frame,
             text="Генератор мелодий",
@@ -74,17 +71,14 @@ class MelodyGeneratorApp:
         )
         title.pack(pady=(0, 20))
 
-        # Контент
         content = Frame(main_frame, bg="#1a1a2e")
         content.pack(fill="both", expand=True)
 
-        # Боковая панель
         sidebar = Frame(content, bg="#252538", width=280)
         sidebar.pack(side="left", fill="y", padx=(0, 15))
         sidebar.pack_propagate(False)
         self._create_sidebar(sidebar)
 
-        # Основная область
         main_area = Frame(content, bg="#1a1a2e")
         main_area.pack(side="left", fill="both", expand=True)
         self._create_main_area(main_area)

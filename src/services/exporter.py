@@ -37,26 +37,19 @@ def export_to_midi(
     track = MidiTrack()
     mid.tracks.append(track)
 
-    # Устанавливаем темп (микросекунды на удар)
     microseconds_per_beat = int(60_000_000 / tempo)
     track.append(mido.MetaMessage("set_tempo", tempo=microseconds_per_beat))
 
-    # Устанавливаем инструмент (0 = Acoustic Grand Piano)
     track.append(Message("program_change", program=0, time=0))
 
-    # Добавляем ноты
     for note in melody.notes:
-        # Длительность в тиках
         duration_ticks = int(note.duration * ticks_per_beat)
 
-        # Начало ноты
         track.append(Message("note_on", note=note.pitch, velocity=velocity, time=0))
-        # Конец ноты
         track.append(
             Message("note_off", note=note.pitch, velocity=0, time=duration_ticks)
         )
 
-    # Конец трека
     track.append(mido.MetaMessage("end_of_track", time=0))
 
     mid.save(output_path)

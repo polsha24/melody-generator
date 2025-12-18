@@ -10,11 +10,9 @@ import matplotlib.pyplot as plt
 
 from ..entities.melody import Melody
 
-# Названия нот с диезами и бемолями
 NOTE_NAMES_SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 NOTE_NAMES_FLAT = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
 
-# Тональности, использующие бемоли
 FLAT_KEYS = {"F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb"}
 
 
@@ -74,10 +72,9 @@ def pretty_print_melody(melody: Melody, key: str = "C") -> str:
     for note in melody.notes:
         name = midi_to_name(note.pitch, use_flats=use_flats)
 
-        # Округление длительности
         dur = round(note.duration, 2)
 
-        # Длина блока — 1 доля = 4 квадратика
+        # 1 доля = 4 квадрата на графике
         blocks = max(1, int(note.duration * 4))
 
         line = f"{name}: " + "█" * blocks + f"  ({dur} долей)"
@@ -111,7 +108,6 @@ def plot_piano_roll(
     """
     use_flats = should_use_flats(key)
 
-    # Подготовка данных
     times = []
     pitches = []
     durations = []
@@ -123,17 +119,13 @@ def plot_piano_roll(
         durations.append(note.duration)
         current_time += note.duration
 
-    # Диапазон высот для оси Y
     min_pitch = min(pitches) - 1
     max_pitch = max(pitches) + 1
 
-    # Создание фигуры
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    # Градиент цвета по высоте (нормализация к диапазону 0-1)
     pitch_range = max_pitch - min_pitch if max_pitch != min_pitch else 1
 
-    # Рисуем ноты как прямоугольники
     for i, (time, pitch, duration) in enumerate(zip(times, pitches, durations)):
         color = plt.cm.viridis((pitch - min_pitch) / pitch_range)
         rect = mpatches.FancyBboxPatch(
@@ -147,26 +139,21 @@ def plot_piano_roll(
         )
         ax.add_patch(rect)
 
-    # Настройка осей
     ax.set_xlim(-0.1, current_time + 0.1)
     ax.set_ylim(min_pitch - 0.5, max_pitch + 0.5)
 
-    # Ось Y: названия нот
     unique_pitches = sorted(set(pitches))
     ax.set_yticks(unique_pitches)
     ax.set_yticklabels([midi_to_name(p, use_flats) for p in unique_pitches])
 
-    # Сетка
     ax.set_axisbelow(True)
     ax.grid(True, axis="x", alpha=0.3, linestyle="--")
     ax.grid(True, axis="y", alpha=0.2, linestyle="-")
 
-    # Подписи
     ax.set_xlabel("Время (доли)", fontsize=12)
     ax.set_ylabel("Высота", fontsize=12)
     ax.set_title(f"Пиано-ролл: {key} {scale_name}", fontsize=14, fontweight="bold")
 
-    # Стиль
     ax.set_facecolor("#1a1a2e")
     fig.patch.set_facecolor("#16213e")
     ax.tick_params(colors="white")
@@ -178,14 +165,12 @@ def plot_piano_roll(
 
     plt.tight_layout()
 
-    # Сохранение, если указан путь
     result = None
     if output_path:
         output_path = Path(output_path)
         plt.savefig(output_path, dpi=150, facecolor=fig.get_facecolor())
         result = output_path
 
-    # Показать график
     if show:
         plt.show()
     else:

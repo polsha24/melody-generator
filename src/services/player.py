@@ -30,16 +30,13 @@ def play_midi(
     if not midi_path.exists():
         raise FileNotFoundError(f"MIDI файл не найден: {midi_path}")
 
-    # Инициализация, если ещё не выполнена
     if not pygame.mixer.get_init():
         init_player()
 
-    # Загрузка и воспроизведение
     pygame.mixer.music.load(str(midi_path))
     pygame.mixer.music.play()
 
     if wait:
-        # Ожидание окончания воспроизведения
         while pygame.mixer.music.get_busy():
             time.sleep(0.1)
 

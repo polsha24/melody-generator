@@ -10,16 +10,14 @@ from typing import Dict, List
 class ScaleType(Enum):
     """Типы музыкальных гамм."""
 
-    MAJOR = "major"  # Мажор
-    MINOR = "minor"  # Минор
-    PENTATONIC_MAJOR = "pentatonic_major"  # Мажорная пентатоника
-    PENTATONIC_MINOR = "pentatonic_minor"  # Минорная пентатоника
-    BLUES = "blues"  # Блюзовая гамма
-    DORIAN = "dorian"  # Дорийский лад
-    MIXOLYDIAN = "mixolydian"  # Миксолидийский лад
+    MAJOR = "major"
+    MINOR = "minor"
+    PENTATONIC_MAJOR = "pentatonic_major"
+    PENTATONIC_MINOR = "pentatonic_minor"
+    BLUES = "blues"
+    DORIAN = "dorian"
+    MIXOLYDIAN = "mixolydian"
 
-
-# Интервальные формулы для каждого типа гаммы
 SCALE_INTERVALS: Dict[ScaleType, List[int]] = {
     ScaleType.MAJOR: [0, 2, 4, 5, 7, 9, 11],
     ScaleType.MINOR: [0, 2, 3, 5, 7, 8, 10],
@@ -30,7 +28,6 @@ SCALE_INTERVALS: Dict[ScaleType, List[int]] = {
     ScaleType.MIXOLYDIAN: [0, 2, 4, 5, 7, 9, 10],
 }
 
-# Соответствие названий нот и MIDI номеров (октава 4)
 NOTE_TO_MIDI: Dict[str, int] = {
     "C": 60,
     "C#": 61,
