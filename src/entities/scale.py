@@ -4,9 +4,10 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List
+from typing import Dict, List  # Такая типизация устарела (python ^3.10). Лучше используйте `dict[..., ...]` / `list[...]`
 
 
+# Добавляйте в докстринг описание всех параметров
 class ScaleType(Enum):
     """Типы музыкальных гамм."""
 
@@ -29,7 +30,7 @@ SCALE_INTERVALS: Dict[ScaleType, List[int]] = {
     ScaleType.MIXOLYDIAN: [0, 2, 4, 5, 7, 9, 10],
 }
 
-NOTE_TO_MIDI: Dict[str, int] = {
+NOTE_TO_MIDI: Dict[str, int] = {  # Это лучше вынести в константы
     "C": 60,
     "C#": 61,
     "Db": 61,

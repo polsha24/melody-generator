@@ -8,7 +8,7 @@ from typing import Optional, Union
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
-from ..entities.melody import Melody
+from ..entities.melody import Melody  # from src.entities import Melody
 
 NOTE_NAMES_SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 NOTE_NAMES_FLAT = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
@@ -121,7 +121,7 @@ def plot_piano_roll(
     pitch_range = max_pitch - min_pitch if max_pitch != min_pitch else 1
 
     for i, (time, pitch, duration) in enumerate(zip(times, pitches, durations)):
-        color = plt.cm.viridis((pitch - min_pitch) / pitch_range)
+        color = plt.cm.viridis((pitch - min_pitch) / pitch_range)  # Cannot find reference 'viridis' in 'cm. pyi'
         rect = mpatches.FancyBboxPatch(
             (time, pitch - 0.4),
             duration,
