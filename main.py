@@ -2,9 +2,9 @@
 Консольный интерфейс генератора мелодий.
 """
 
-from src.entities.scale import NOTE_TO_MIDI, Scale, ScaleType
+from src.entities.scale import NOTE_TO_MIDI, Scale, ScaleType  # все это нужно было вынести в /entities/__init__.py
 from src.entities.settings import GeneratorSettings
-from src.services.exporter import export_to_midi
+from src.services.exporter import export_to_midi  # все это нужно было вынести в /services/__init__.py
 from src.services.generator import MelodyGenerator
 from src.services.player import play_midi
 from src.services.visualizer import plot_piano_roll, pretty_print_melody

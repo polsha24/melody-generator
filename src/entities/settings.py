@@ -3,7 +3,7 @@
 """
 
 from dataclasses import dataclass
-from typing import List
+from typing import List  # Такая типизация устарела. Лучше используйте `list[...]`
 
 
 @dataclass

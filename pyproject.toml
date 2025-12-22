@@ -1,12 +1,15 @@
 [tool.poetry]
 name = "melody-generator"
-version = "0.1.0"
+version = "0.1.0"  # Начинайте с 1.0.0
 description = "Генератор мелодий на основе музыкальных гамм"
 authors = ["Токунова Полина <p.tokunova@yandex.ru>"]
 readme = "README.md"
+# Нет, это так не работает. У вас в src 3 модуля - core, database, models. Нужно указывать, какой именно нужно собрать в пакет.
+# Хотя, судя по всему, вам сборка пакета не нужна вообще -> packages не нужно указывать, а package-mode поставить False
 packages = [{include = "src"}]
 
-[tool.poetry.dependencies]
+[tool.poetry.dependencies]  # Все версии нужно строго фиксировать, например "==3.9.*"
+# Для Poetry 2 версию Python нужно указывать в `tool.poetry.requires-python`. Так, как у вас, тоже будет работать, но это оформление в любой момент может перестать поддержтиваться.
 python = "^3.9"
 mido = "^1.3.0"
 matplotlib = "^3.9.0"
@@ -16,20 +19,20 @@ pillow = "^10.0.0"
 [tool.poetry.group.dev.dependencies]
 black = "^24.1.0"
 ruff = "^0.2.0"
-isort = "^5.12.0"
+isort = "^5.12.0"  # уже есть в ruff
 pre-commit = "^3.4.0"
 
-[build-system]
-requires = ["poetry-core"]
+[build-system]  # Если вы не делаете сборку вашего проекта в пакет, то этот блок не нужен. Но еще тогда в `tool.poetry` нужно указать явно `package-mode=False`
+requires = ["poetry-core"]  # Здесь тоже версия должна быть зафиксирована
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 88
-target-version = ['py39']
+target-version = ['py39']  # Вы даете диапозон версий питона, но для Ruff указываете 1 конкретную. Это некорректно
 
-[tool.ruff]
+[tool.ruff]   # Found 1 error.
 line-length = 88
-lint.select = ["E", "F", "W", "C", "N", "I", "BLE", "SIM"]
+lint.select = ["E", "F", "W", "C", "N", "I", "BLE", "SIM"]  # Почему вы не все правила с пары используете?
 
 [tool.isort]
 profile = "black"

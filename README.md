@@ -23,7 +23,7 @@ melody-generator/
 ├── main.py                # Консольный интерфейс
 ├── pyproject.toml         # Конфигурация проекта
 ├── requirements.txt       # Зависимости
-├── requirements-dev.txt   # Зависимости для разработки
+├── requirements-dev.txt   # Зависимости для разработки (у вас же нет такого файла :) )
 ├── Makefile               # Команды для разработки
 ├── src/
 │   ├── entities/          # Сущности (модели данных)
@@ -72,6 +72,8 @@ poetry run python main.py
 ```
 
 ### Альтернативная установка (pip)
+
+(Не нужно альтернатив. Это рождает уязвимости. Вдруг вы забудете поддерживать актуальность requirements. Используйте только Poetry)
 
 ```bash
 pip install -r requirements.txt
