@@ -3,12 +3,14 @@
 """
 
 from pathlib import Path
-from typing import Union
+from typing import Union  # Такая типизация устарела. Лучше используйте `|`. Пример: `output_path: str | Path`
 
 import mido
 from mido import Message, MidiFile, MidiTrack
 
 from ..entities.melody import Melody
+# При правильном `__init__.py` (и без лишнего `__init__.py` под `src`) импорт выглядел бы так:
+# from entities import Melody
 
 
 def export_to_midi(

@@ -24,11 +24,11 @@ from tkinter import (
 
 from PIL import Image, ImageTk
 
-from src.entities.scale import NOTE_TO_MIDI
+from src.entities.scale import NOTE_TO_MIDI  # все это нужно было вынести в /entities/__init__.py
 from src.entities.scale import Scale as MusicScale
 from src.entities.scale import ScaleType
 from src.entities.settings import GeneratorSettings
-from src.services.exporter import export_to_midi
+from src.services.exporter import export_to_midi  # все это нужно было вынести в /services/__init__.py
 from src.services.generator import MelodyGenerator
 from src.services.player import play_midi
 from src.services.visualizer import plot_piano_roll, pretty_print_melody
@@ -307,7 +307,7 @@ class MelodyGeneratorApp:
             img.thumbnail((frame_width, frame_height), Image.Resampling.LANCZOS)
 
         self.photo_image = ImageTk.PhotoImage(img)
-        self.image_label.config(image=self.photo_image, text="")
+        self.image_label.config(image=self.photo_image, text="")  # Expected type '_Image | str', got 'PhotoImage' instead
 
         with tempfile.NamedTemporaryFile(suffix=".mid", delete=False) as tmp:
             self.current_midi_path = tmp.name

@@ -4,7 +4,7 @@
 
 import random
 
-from ..entities.melody import Melody
+from ..entities.melody import Melody  # from entities import Melody, Note, Scale, GeneratorSettings
 from ..entities.note import Note
 from ..entities.scale import Scale
 from ..entities.settings import GeneratorSettings
